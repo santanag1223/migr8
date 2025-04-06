@@ -1,4 +1,4 @@
-# `migr8` - Community _driven_ ridesharing
+# `migr8` - Community _driven_ ridesharing 👋
 
 ## 🚗 Mission Summary
 `migr8` is a ridesharing platform built _by_ and _for_ drivers and riders — **not shareholders**. We reject the extractive gig-economy model by:
