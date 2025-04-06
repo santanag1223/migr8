@@ -12,7 +12,7 @@
   - Ride-Xtras (driver offers) such as stereo sharing, ad free music, baggage space, surplus-seating, additional-stops, truck bed, etc.
    
 ### Respect our riders by **not selling any data to third parties, or ride-time to advertisers.**
-- Advertisments are impossible to avoid today.
+- Advertisments are basically omnipresent today, and selling user data has become an industry norm, even if customers do not approve of such actions.
 - Thus, `migr8` can stand out by not selling any of our user's data or ride-time for an extra buck.
 
 ### Offer a better ride experience to drivers and riders alike by matching users along `Preferences`.
