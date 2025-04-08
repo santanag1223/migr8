@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		728C33F62DA4CFD800E794FF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 728C33F52DA4CFD100E794FF /* .gitignore */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		72EFE2862D2F873000284B5F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -28,7 +24,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		728C33F52DA4CFD100E794FF /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		72EFE2712D2F873000284B5F /* migr8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = migr8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72EFE2852D2F873000284B5F /* migr8Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = migr8Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72EFE28F2D2F873000284B5F /* migr8UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = migr8UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,7 +88,6 @@
 		72EFE2682D2F873000284B5F = {
 			isa = PBXGroup;
 			children = (
-				728C33F52DA4CFD100E794FF /* .gitignore */,
 				72396E8F2D40AB4F008A6F8D /* migr8_Swift */,
 				72EFE2882D2F873000284B5F /* migr8_Swift_Tests */,
 				72EFE2922D2F873000284B5F /* migr8_SwiftUI_Tests */,
@@ -231,7 +225,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				728C33F62DA4CFD800E794FF /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

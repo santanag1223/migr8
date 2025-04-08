@@ -1,0 +1,46 @@
+{
+    "firstName": "John",
+    "lastName": "Pork",
+    "isLoggedIn": false,
+    "isDriver": true,
+    "imageName": "jpork.png",
+    "coordinates": {
+        "latitude": 0,
+        "longitude": 0
+    },
+    "driverData": {
+        "offers": {
+            "AdFree" : { "price": 0.0, "enabled": false },
+            "FreeWater" : { "price": 0.0, "enabled": false },
+            "HeatedSeats" : { "price": 0.0, "enabled": false },
+            "CooledSeats" : { "price": 0.0, "enabled": false },
+            "RiderAcControls" : { "price": 0.0, "enabled": false },
+            "SpaceousRide" : { "price": 0.0, "enabled": false },
+            "CargoSpace" : { "price": 0.0, "enabled": false },
+            "StereoShare" : { "price": 0.0, "enabled": false },
+            "SnackStop" : { "price": 0.0, "enabled": false },
+            "AdditionalStop" : { "price": 0.0, "enabled":  false },
+            "LargeGroup" : { "price": 0.0, "enabled": false },
+            "LargeBaggage" : { "price": 0.0, "enabled": false },
+            "TruckBed" : { "price": 0.0, "enabled": false }
+        },
+        "prefs": {
+            "conversationPref" : 1,
+            "foodPref" : 1,
+            "musicPref" : 1,
+            "podcastPref" : 1,
+            "smokingPref" : 1,
+        },
+        "ratePerMile": 1.5,
+        "vehicles": []
+    },
+    "riderData": {
+        "prefs": {
+            "conversationPref" : 1,
+            "foodPref" : 1,
+            "musicPref" : 1,
+            "podcastPref" : 1,
+            "smokingPref" : 1,
+        }
+    }
+}

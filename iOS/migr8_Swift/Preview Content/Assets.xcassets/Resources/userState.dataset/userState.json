@@ -1,0 +1,11 @@
+{
+    "username" = "santanag1223",
+    "id" = 10182000,
+    "isLoggedIn" = true,
+    "userType" = true,
+    "imageName" = "nil",
+    "coordinates" = {
+        "latitude" = 0,
+        "longitude" = 0
+    }
+}
