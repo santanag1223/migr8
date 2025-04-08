@@ -48,3 +48,7 @@ Our goal? A rideshare ecosystem where **fairness, trust, and human connection** 
 - Safety Features: SOS button, ride-sharing with trusted contacts, and driver verification.
 - Ratings and Reviews: Receive feedback from riders to build reputation
 - Driver Unions: Assist in forming regional driver unions that work to amplify driver feedback and voices. 
+
+
+## 📜 License  
+`migr8` is [AGPLv3 licensed](LICENSE). Use freely, but share your improvements!
