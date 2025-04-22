@@ -17,12 +17,12 @@ struct ContentView: View {
         if modelData.userState.isLoggedIn {
             if modelData.userState.isDriver
             {
-                DriverMainView(driverData: modelData.userState.driverData)
+                DriverMainView(driverData: DriverData())
                     .environment(modelData)
             }
             else
             {
-                RiderMainView(riderData: modelData.userState.riderData)
+                RiderMainView(riderData: RiderData())
                     .environment(modelData)
             }
         }

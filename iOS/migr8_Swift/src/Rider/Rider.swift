@@ -1,22 +1,38 @@
 import SwiftUI
 import MapKit
+import Observation
 
-
-enum RideStatus {
-    case pendingDestination
-    case pendingDriver
-    case activeRide
-}
-
-struct RiderData: Hashable, Identifiable, Codable {
-    var id: Self { self }
+@Observable
+class RiderData: Codable, Identifiable {
+    var id: UUID
     var prefs: PreferenceCollection = PreferenceCollection()
+    
+    init(id: UUID = UUID(),
+        prefs: PreferenceCollection = PreferenceCollection())
+    {
+        self.id = id
+        self.prefs = prefs
+    }
+    
+    required init(from: Decoder) {
+        self.id = UUID()
+        self.prefs = PreferenceCollection()
+    }
+    
+    func encode(to: Encoder) throws {
+        
+    }
+    
+    static func == (lhs: RiderData, rhs: RiderData) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
-class Rider: ObservableObject {
-    @Published var currentLocation: CLLocationCoordinate2D? = nil
-    @Published var isAvailable: Bool = false
-    @Published var riderData: RiderData
+@Observable
+class Rider {
+    var currentLocation: CLLocationCoordinate2D? = nil
+    var isAvailable: Bool = false
+    var riderData: RiderData
         
     init(riderData: RiderData? = nil) {
         if let riderData = riderData {
@@ -58,5 +74,17 @@ struct RiderMainView: View {
                     Text("Profile")
                 }
         }
+    }
+}
+
+// Environment extentions
+struct RiderDataKey: EnvironmentKey {
+    static var defaultValue: RiderData = RiderData()
+}
+
+extension EnvironmentValues {
+    var riderData: RiderData {
+        get { self[RiderDataKey.self] }
+        set { self[RiderDataKey.self] = newValue }
     }
 }

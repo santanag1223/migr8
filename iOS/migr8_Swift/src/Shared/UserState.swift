@@ -14,8 +14,6 @@ struct UserState: Hashable, Codable, Identifiable {
     var id: Self { self }
     var isLoggedIn: Bool
     var isDriver: Bool
-    var driverData: DriverData
-    var riderData: RiderData
     
     private var imageName: String
     var image: Image {

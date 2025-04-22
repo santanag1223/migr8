@@ -76,7 +76,7 @@ struct RateMapOverlay: View {
 }
 
 struct RiderMapOverlay: View {
-    @ObservedObject var driver: Driver
+    var driver: Driver
     
     // Logic for matching driver with new riders
     // along user preferences
@@ -144,7 +144,7 @@ struct RiderMapOverlay: View {
 }
 
 struct DriverMapView: View {
-    @ObservedObject var driver: Driver
+    var driver: Driver
     @Environment(ModelData.self) var modelData
     
     @StateObject private var locationManager = LocationManager()

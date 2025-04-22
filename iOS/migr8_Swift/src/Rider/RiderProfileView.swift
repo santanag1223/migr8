@@ -3,14 +3,11 @@ import MapKit
 
 struct RiderProfileView: View {
     @Environment(ModelData.self) var modelData: ModelData
-    @ObservedObject var rider: Rider
+    var rider: Rider
     @State private var selectedTab = 0
     @State private var showingLogoutAlert = false
     
     var body: some View {
-        @Bindable var modelData = modelData
-        @ObservedObject var rider = rider
-        
         NavigationView {
             VStack {
                 // Custom tab picker
@@ -23,13 +20,13 @@ struct RiderProfileView: View {
                 .padding()
                 
                 TabView(selection: $selectedTab) {
-                    RiderProfileEditor(rider: rider)
+                    RiderProfileEditor(riderData: rider.riderData)
                         .tag(0)
                     
-                    RiderPreferencesEditor(riderData: $rider.riderData)
+                    RiderPreferencesEditor(riderData: rider.riderData)
                         .tag(1)
                     
-                    RiderRideHistory(rider: rider)
+                    RiderRideHistory(riderData: rider.riderData)
                         .tag(2)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -61,7 +58,7 @@ struct RiderProfileView: View {
 }
 
 struct RiderRideHistory: View {
-    @ObservedObject var rider: Rider
+    @Bindable var riderData: RiderData
 
     var body: some View {
         List {
@@ -74,7 +71,7 @@ struct RiderRideHistory: View {
 }
 
 struct RiderPreferencesEditor: View {
-    @Binding var riderData: RiderData
+    @Bindable var riderData: RiderData
     
     var body: some View {
 
@@ -105,7 +102,7 @@ struct RiderPreferencesEditor: View {
 
 
 struct RiderProfileEditor: View {
-    @ObservedObject var rider: Rider
+    @Bindable var riderData: RiderData
 
     var body: some View {
         Form {

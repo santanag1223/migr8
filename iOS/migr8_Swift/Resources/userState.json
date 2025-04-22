@@ -10,19 +10,33 @@
     },
     "driverData": {
         "offers": {
-            "AdFree" : { "price": 0.0, "enabled": false },
-            "FreeWater" : { "price": 0.0, "enabled": false },
-            "HeatedSeats" : { "price": 0.0, "enabled": false },
-            "CooledSeats" : { "price": 0.0, "enabled": false },
-            "RiderAcControls" : { "price": 0.0, "enabled": false },
-            "SpaceousRide" : { "price": 0.0, "enabled": false },
-            "CargoSpace" : { "price": 0.0, "enabled": false },
-            "StereoShare" : { "price": 0.0, "enabled": false },
-            "SnackStop" : { "price": 0.0, "enabled": false },
-            "AdditionalStop" : { "price": 0.0, "enabled":  false },
-            "LargeGroup" : { "price": 0.0, "enabled": false },
-            "LargeBaggage" : { "price": 0.0, "enabled": false },
-            "TruckBed" : { "price": 0.0, "enabled": false }
+            "allOffers": [
+                {
+                    "title": "Ad-free Music",
+                    "enabled": true,
+                    "price": 0,
+                },
+                {
+                    "title": "Free Water",
+                    "enabled": true,
+                    "price": 0,
+                },
+                {
+                    "title": "AC Controls",
+                    "enabled": true,
+                    "price": 0,
+                },
+                {
+                    "title": "Stereo-Share",
+                    "enabled": true,
+                    "price": 0,
+                },
+                {
+                    "title": "Truck Bed",
+                    "enabled": true,
+                    "price": 0,
+                }
+            ]
         },
         "prefs": {
             "conversationPref" : 1,
@@ -31,7 +45,8 @@
             "podcastPref" : 1,
             "smokingPref" : 1,
         },
-        "ratePerMile": 1.5,
+        "mileRate": 24.5,
+        "hourRate": 10.5,
         "vehicles": []
     },
     "riderData": {

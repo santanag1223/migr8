@@ -2,7 +2,7 @@ import SwiftUI
 import MapKit
 
 struct RiderOrderView: View {
-    @ObservedObject var rider: Rider
+    var rider: Rider
     @Environment(ModelData.self) var modelData
     @State private var selectedTab = 0
     var body: some View {

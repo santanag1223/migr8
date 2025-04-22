@@ -5,234 +5,196 @@ import MapKit
 // rate and any offered RiderExtras.
 struct DriverRateView: View {
     @Environment(ModelData.self) var modelData
-    @ObservedObject var driver: Driver
+    var driver: Driver
     
     var body: some View {
-        @Bindable var modelData = modelData
-        return NavigationStack {
-            // Current Rate Display
-            currentRateSection(driverRate: $modelData.userState.driverData.ratePerMile)
-            
-            //
-            rideOffersSection(offerData: $modelData.userState.driverData.offers)
-            }
-            .navigationTitle("Your Rate & Offers")
-            .padding()
-        }
-    }
-    
-    private func statusToggleButton(driver: Driver) -> some View {
-        return Button(action: { withAnimation { driver.isAvailable = !driver.isAvailable }}) {
-            Text(driver.isAvailable ? "Go Offline" : "Go Online")
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(driver.isAvailable ? Color.purple : Color.green)
-                .cornerRadius(10)
-            }
-            .padding(.horizontal)
-    }
-    
-    private func currentRateSection(driverRate: Binding<Double>) -> some View {
-        return NavigationStack {
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Stepper(value: driverRate,
-                                    in: 0...10,
-                                    label: {Text("$ per mile: \(driverRate)") })
+        @Bindable var driverData = driver.driverData
+
+        Form {
+            Section("Your Rates")
+            {
+                VStack {
+                    DrierHourlyRateView(currentValue: $driverData.hourRate)
+                    
+                    Divider()
+                    
+                    DrierMileRateView(currentValue: $driverData.mileRate)
                 }
             }
-            .padding()
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .shadow(radius: 2)
+            
+            Section("Your Offers")
+            {
+                OfferList(driverData: driverData)
+            }
         }
-        .navigationTitle(Text("Current Rate"))
     }
-    
-private func rideOffersSection(offerData: Binding<DriverOfferData>) -> some View {
-    return DriverOfferView(driverOfferData: offerData)
-            .padding()
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .shadow(radius: 2)
 }
 
-struct DriverOfferView: View {
-    @Binding var driverOfferData: DriverOfferData
-
-    var body: some View {
-        return NavigationStack {
-            Form {
-                Section("Free Perks") {
-                    offerToggleRow(
-                        offerDetail: FreeWaterOffer,
-                        offerData: $driverOfferData.FreeWater)
-                }
-                
-                Section("Entertainment") {
-                    offerToggleRow(
-                        offerDetail: StereoShareOffer,
-                        offerData: $driverOfferData.StereoShare,
-                        offerPrice: $driverOfferData.StereoShare.price,
-                        showPrice: true)
-                    
-                    offerToggleRow(
-                        offerDetail: AdFreeOffer,
-                        offerData: $driverOfferData.AdFree)
-                }
-                
-                Section("Seat Features") {
-                    offerToggleRow(
-                        offerDetail: HeatedSeatsOffer,
-                        offerData: $driverOfferData.HeatedSeats,
-                        offerPrice: $driverOfferData.HeatedSeats.price,
-                        showPrice: true)
-                    
-                    offerToggleRow(
-                        offerDetail: CooledSeatsOffer,
-                        offerData: $driverOfferData.CooledSeats,
-                        offerPrice: $driverOfferData.CooledSeats.price,
-                        showPrice: true)
-                    
-                    offerToggleRow(
-                        offerDetail: RiderAcControlsOffer,
-                        offerData: $driverOfferData.RiderAcControls,
-                        offerPrice: $driverOfferData.RiderAcControls.price,
-                        showPrice: true)
-                }
-                
-                Section("Space & Comfort") {
-                    offerToggleRow(
-                        offerDetail: SpaceousOfferDetails,
-                        offerData: $driverOfferData.SpaceousRide,
-                        offerPrice: $driverOfferData.SpaceousRide.price,
-                        showPrice: true)
-                    
-                    offerToggleRow(
-                        offerDetail: CargoSpaceOffer,
-                        offerData: $driverOfferData.CargoSpace,
-                        offerPrice: $driverOfferData.CargoSpace.price,
-                        showPrice: true)
-                }
-                
-                Section("Stops & Accommodations") {
-                    offerToggleRow(
-                        offerDetail: SnackStopOffer,
-                        offerData: $driverOfferData.SnackStop,
-                        offerPrice: $driverOfferData.SnackStop.price,
-                        showPrice: true)
-                    
-                    offerToggleRow(
-                        offerDetail: AdditionalStopOffer,
-                        offerData: $driverOfferData.AdditionalStop,
-                        offerPrice: $driverOfferData.AdditionalStop.price,
-                        showPrice: true)
-                    
-                    offerToggleRow(
-                        offerDetail: LargeGroupOffer,
-                        offerData: $driverOfferData.LargeGroup,
-                        offerPrice: $driverOfferData.LargeGroup.price,
-                        showPrice: true)
-                    
-                    offerToggleRow(
-                        offerDetail: LargeBaggageOffer,
-                        offerData: $driverOfferData.LargeBaggage,
-                        offerPrice: $driverOfferData.LargeBaggage.price,
-                        showPrice: true)
-                    
-                    offerToggleRow(
-                        offerDetail: TruckBedOffer,
-                        offerData: $driverOfferData.TruckBed,
-                        offerPrice: $driverOfferData.TruckBed.price,
-                        showPrice: true)
-                }
-            }
-            .navigationTitle("Ride Offers")
+struct DriverRateGauge: View {
+    @Binding var currentValue: Double
+    @State var minValue: Double = 0.0
+    @State var maxValue: Double = 50.50
+    
+    var rateColor : Color {
+        if (currentValue >= maxValue) {
+            return .red
+        }
+        else if (currentValue >= maxValue * 0.75) {
+            return .orange
+        }
+        else if (currentValue >= maxValue * 0.5) {
+            return .yellow
+        }
+        else {
+            return .green
         }
     }
     
-    @ViewBuilder
-    func offerToggleRow(offerDetail: OfferDetails, offerData: Binding<OfferData>, offerPrice : Binding<Double>? = nil, showPrice: Bool = false) -> some View {
-        
-        
-        VStack(alignment: .leading) {
+    var body: some View {
+        Gauge(value: currentValue, in: minValue...maxValue) {
+        } currentValueLabel: {
+            Text(String(format: "$%2.2f", currentValue))
+                .foregroundStyle(rateColor)
+                .fontDesign(.monospaced)
+        } minimumValueLabel: {
+            Text(String(format: "%2.f", minValue))
+                .foregroundStyle(Color.gray)
+                .fontDesign(.monospaced)
+        } maximumValueLabel: {
+            Text(String(format: "$%2.f", maxValue))
+                .foregroundStyle(Color.orange)
+                .fontDesign(.monospaced)
+        }
+        .gaugeStyle(.accessoryCircular)
+        .tint(Gradient(colors: [.green, .yellow, .red]))
+    }
+}
+
+struct RateGaugeView : View {
+    @Binding var currentValue: Double
+    @State var minValue: Double = 0.0
+    @State var maxValue: Double = 50.50
+    
+    var body: some View {
+        VStack {
+            DriverRateGauge(currentValue: $currentValue)
+            
             HStack {
-                if let iconName = offerDetail.icon {
-                    Image(systemName: iconName)
-                        .foregroundColor(.blue)
-                        .frame(width: 28)
+                Button(action: {
+                    currentValue += 0.25
+                    }) {
+                    Label("Rate Increase", systemImage: "arrow.up")
+                        .labelStyle(.iconOnly)
+                        .foregroundStyle(.green)
+                        .disabled(currentValue >= maxValue)
+                        .frame(width: 30)
                 }
                 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(offerDetail.title)
-                        .font(.headline)
-                        .foregroundColor(offerData.wrappedValue.enabled ? .primary : .secondary)
+                Button(action: {
+                    currentValue -= 0.25
+                    }) {
+                    Label("Rate Decrease", systemImage: "arrow.down")
+                        .labelStyle(.iconOnly)
+                        .foregroundStyle(.red)
+                        .disabled(currentValue <= minValue)
+                        .frame(width: 30)
+                }
+            }
+            .buttonStyle(.bordered)
+        }
+    }
+}
+
+struct DrierMileRateView : View {
+    @Binding var currentValue: Double
+    
+    var body: some View {
+        HStack {
+            VStack {
+                Text("Mile-ly Rate:")
+                    .font(.headline)
+                Text("$\((String(format: "%2.2f", currentValue))) / mile")
+                    .font(.subheadline)
+                    .fontDesign(.monospaced)
+            }
+            .padding(15)
+            
+            Spacer()
+            
+            RateGaugeView(currentValue: $currentValue)
+            .padding(15)
+        }
+    }
+}
+
+struct DrierHourlyRateView : View {
+    @Binding var currentValue: Double
+    
+    var body: some View {
+        HStack {
+            VStack {
+                Text("Hour-ly Rate:")
+                    .font(.headline)
+                Text("$\((String(format: "%2.2f", currentValue))) / hour")
+                    .font(.subheadline)
+                    .fontDesign(.monospaced)
+            }
+            .padding(15)
+            
+            Spacer()
+
+            RateGaugeView(currentValue: $currentValue)
+            .padding(15)
+
+        }
+    }
+}
+
+
+
+struct OfferList: View {
+    @Bindable var driverData: DriverData
+    
+    func groupByCategory(_ items: [Offer]) -> [(OfferCategory, [Offer])] {
+        var groupedOffers = Dictionary(grouping: items, by: { $0.category })
+        return groupedOffers.sorted(by: { $0.key.rawValue < $1.key.rawValue })
+    }
+
+    var body: some View {
+        List {
+            ForEach(groupByCategory(self.driverData.offers.offers), id: \.0) { pair in
+                Section(header: Text(verbatim: pair.0.headerDescription)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary))
+                {
+                    ForEach(pair.1) { offer in
+                        offer.body()
+                    }
+                }
+            }
+        }.listStyle(.automatic)
+    }
+}
+
+struct DriverRateView_Preview: PreviewProvider {
+    static var previews: some View {
+        Form {
+            Section("Your Rates")
+            {
+                VStack {
+                    DrierHourlyRateView(currentValue: .constant(10.0))
                     
-                    Text(offerDetail.description)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    Divider()
+                    
+                    DrierMileRateView(currentValue: .constant(30.0))
                 }
             }
             
-            if showPrice && offerData.wrappedValue.enabled {
-                PriceStepper(
-                    currentPrice: offerPrice.unsafelyUnwrapped
-                )
-                .padding(.leading, 32)
-                .padding(.top, 8)
+            Section("Your Offers")
+            {
+                OfferList(driverData: DriverData())
             }
         }
-        .padding(.vertical, 4)
-    }
-}
-
-struct PriceStepper: View {
-    @State var stepLabel: String = "$"
-    @State var priceStep: Double = 0.5
-    @Binding var currentPrice: Double
-    
-    let maxPrice: Double = 5.0
-    let minPrice: Double = 0.0
-    
-    func incrementStep() -> Void {
-        if currentPrice < maxPrice - 0.5 {
-            currentPrice += 0.5
-        }
-    }
-    
-    func decrementStep() -> Void {
-        if currentPrice < minPrice + 0.5 {
-            currentPrice -= 0.5
-        }
-    }
-    
-    var body: some View {
-         Stepper {
-             Text("\(stepLabel) \(currentPrice)")
-         } onIncrement: {
-             incrementStep()
-         } onDecrement: {
-             decrementStep()
-         }
-         .padding(5)
-        }
-}
-
-// NumbersOnlyViewModifier to restrict text input to numbers for price fields
-struct NumbersOnlyViewModifier: ViewModifier {
-    @Binding var text: String
-    var includeDecimal: Bool = true
-    
-    func body(content: Content) -> some View {
-        content
-            .keyboardType(.decimalPad)
-    }
-}
-
-struct OfferDetailsManagementView_Previews: PreviewProvider {
-    static var previews: some View {
-        DriverOfferView(driverOfferData: .constant(DriverOfferData()))
     }
 }

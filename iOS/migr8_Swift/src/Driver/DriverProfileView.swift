@@ -9,7 +9,7 @@ struct DriverProfileView: View {
     @State private var showingLogoutAlert = false
 
     var body: some View {
-        @Bindable var modelData = modelData
+        @Bindable var driverData = self.driver.driverData
         
         NavigationView {
             VStack {
@@ -23,10 +23,10 @@ struct DriverProfileView: View {
                 .padding()
                 
                 TabView(selection: $selectedTab) {
-                    DriverProfileEditor(driverData: $modelData.userState.driverData)
+                    DriverProfileEditor(driverData: driverData)
                         .tag(0)
                     
-                    DriverPreferencesEditor(driverData: $modelData.userState.driverData)
+                    DriverPreferencesEditor(driverData: driverData)
                         .tag(1)
                    
                     DriverRideHistory(driver: driver)
@@ -62,7 +62,7 @@ struct DriverProfileView: View {
 }
 
 struct DriverRideHistory: View {
-    @ObservedObject var driver: Driver
+    var driver: Driver
     
     var body: some View {
         List {
@@ -88,10 +88,9 @@ struct RideHistoryRow: View {
 
 
 struct DriverPreferencesEditor: View {
-    @Binding var driverData: DriverData
+    @Bindable var driverData: DriverData
 
     var body: some View {
-        Form() {
             PreferencePicker(
                 PreferenceView: conversationPrefView,
                 prefValue: $driverData.prefs.conversationPref
@@ -116,17 +115,24 @@ struct DriverPreferencesEditor: View {
                 PreferenceView: smokingPrefView,
                 prefValue: $driverData.prefs.smokingPref
             )
-        }
     }
 }
 
 struct DriverProfileEditor: View {
-    @Binding var driverData: DriverData
+    @Environment(ModelData.self) var modelData
+    @Bindable var driverData: DriverData
 
     var body: some View {
+        var modelData = self.modelData
+        
         Form {
             Section(header: Text("Personal Information")) {
+                Text(modelData.userState.firstName + " " + modelData.userState.lastName)
                 // Add personal info fields
+            }
+            
+            Section(header: Text("Preferences")) {
+                DriverPreferencesEditor(driverData: driverData)
             }
             
             Section(header: Text("Vehicles")) {

@@ -291,11 +291,11 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"migr8/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"migr8_Swift/Preview Content\"";
 				DEVELOPMENT_TEAM = R88SNYYM4M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = migr8/Info.plist;
+				INFOPLIST_FILE = migr8_Swift/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = migr8;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to match you with nearby riders and track your route during rides";
@@ -334,11 +334,11 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"migr8/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"migr8_Swift/Preview Content\"";
 				DEVELOPMENT_TEAM = R88SNYYM4M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = migr8/Info.plist;
+				INFOPLIST_FILE = migr8_Swift/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = migr8;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to match you with nearby riders and track your route during rides";
