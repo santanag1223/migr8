@@ -26,14 +26,14 @@ Our goal? A rideshare ecosystem where **fairness, trust, and human connection** 
 - By promising to treat users like people, and not just passing customers, `migr8` can foster a community built on trust and respect, and be the change **users** want to see.
 
 #### 🙏 Offer a better Rideshare App to drivers and riders alike with community-driven feautres.
-- Ride Preference-Matching: 
+- Preference-Matching: 
   - Preference Topics: Conversation, Music, Ride+Eat, Smoke+Vape, TalkMedia, etc.
   - A Preference is set to one of three values: (PreferNot | NoPreference | Prefer) for each topic
     - PreferNot: should **not** match with users who prefer topic.
     - NoPreference: the user is indifferent to topic.
     - Prefer: should match with users who prefer topic.
   - Present rider with their preference-match-summary for each prospective driver before they confirm a ride.
-- Ride-Xtras (Driver Offers):
+- Ride-Offers:
   - Standardized offering that driver's can choose to offer to riders after confirming a ride.
   - Some price variation allowed, but riders should feel they are getting a similar service for a similar price.
 - Community Tab:
