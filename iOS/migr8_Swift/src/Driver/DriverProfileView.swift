@@ -121,14 +121,53 @@ struct DriverPreferencesEditor: View {
 struct DriverProfileEditor: View {
     @Environment(ModelData.self) var modelData
     @Bindable var driverData: DriverData
+    @State private var showingAddVehicleForm = false
+
 
     var body: some View {
-        var modelData = self.modelData
+        let modelData = self.modelData
         
         Form {
             Section(header: Text("Personal Information")) {
-                Text(modelData.userState.firstName + " " + modelData.userState.lastName)
-                // Add personal info fields
+                HStack(alignment: .center) {
+                    VStack(alignment: .center ) {
+                        // name
+                        Text("👤 Name:")
+                            .font(.caption2)
+                            .padding(.bottom, 2)
+                        Text(modelData.userState.firstName + " " + modelData.userState.lastName)
+                            .font(.headline)
+                            .padding(.bottom, 10)
+                        
+                        // rating
+                        Text("⭐️ Driver Rating:")
+                            .font(.caption2)
+                            .padding(.bottom, 2)
+                        Text("10 / 10")
+                            .font(.headline)
+                            .padding(.bottom, 10)
+                        
+                        // miles
+                        Text("🛣️ Life-Time Distance:")
+                            .font(.caption2)
+                            .padding(.bottom, 2)
+                        Text("93,120 miles")
+                            .font(.headline)
+                            //.padding(.bottom, 10)
+                        
+                        // Add personal info fields
+
+                        Spacer()
+                    }
+                    .padding(15)
+                    Spacer()
+                    Image("jpork")
+                        .resizable()
+                        .aspectRatio(1.0, contentMode: .fit)
+                        .frame(width: 150)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(.indigo, lineWidth: 6))
+                }
             }
             
             Section(header: Text("Preferences")) {
@@ -141,32 +180,19 @@ struct DriverProfileEditor: View {
                 }
                 
                 Button("Add Vehicle") {
-                    // Add new vehicle action
+                    showingAddVehicleForm = true
+                }
+                .sheet(isPresented: $showingAddVehicleForm) {
+                    NewVehicleForm(driverData: driverData)
                 }
             }
         }
     }
 }
 
-struct Vehicle: Hashable, Identifiable, Codable {
-    var id: Self { self }
-    var make: String
-    var model: String
-    var year: Int
-    var licensePlate: String
-    var insuranceInfo: String
-}
-
-struct VehicleRow: View {
-    let vehicle: Vehicle
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("\(vehicle.year) \(vehicle.make) \(vehicle.model)")
-                .font(.headline)
-            Text(vehicle.licensePlate)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-    }
+ struct DriverProfileView_Preview: PreviewProvider {
+    static var previews: some View {
+        DriverProfileEditor(driverData: DriverData())
+            .environment(ModelData())
+   }
 }

@@ -42,7 +42,7 @@ struct LoginView: View {
         VStack(spacing: 30) {
             Text("migr8")
                 .font(.system(size: 40, weight: .bold))
-                .foregroundColor(.purple)
+                .foregroundColor(.indigo)
             
             Picker("Select Type", selection: $loginAsDriver) {
                 Text("Driver").tag(true)

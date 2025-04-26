@@ -1,6 +1,4 @@
 import SwiftUI
-import Foundation
-import UIKit
 
 struct PreferenceCollection: Hashable, Identifiable, Codable {
     var id: Self { self }
@@ -20,11 +18,11 @@ struct PreferenceView {
 var conversationPrefView: PreferenceView = PreferenceView(
     title: "Conversation",
     description: "Casual conversation with your driver.",
-    icon: "person.2.wave.2.fill"
+    icon: "person.2.wave.2"
 )
 
 var foodPrefView: PreferenceView = PreferenceView(
-    title: "Food & Drink",
+    title: "Food / Drink",
     description: "Eating and drinking small items during ride. (please be respectful of your driver's ride)",
     icon: "takeoutbag.and.cup.and.straw"
 )
@@ -36,15 +34,15 @@ var musicPrefView: PreferenceView = PreferenceView(
 )
 
 var podcastsPrefView: PreferenceView = PreferenceView(
-    title: "Podcasts & Talk Radio",
+    title: "News / Talk Media",
     description: "News & talk broadcasts during ride.",
     icon: "waveform"
 )
 
 var smokingPrefView: PreferenceView = PreferenceView(
-    title: "Smoking & Vaping",
+    title: "Smoke / Vape",
     description: "Okay with smoking or vaping during ride. (possibly w/ windows down)",
-    icon: "smoke.fill"
+    icon: "smoke"
 )
 
 struct PreferencePicker: View {
@@ -66,19 +64,21 @@ struct PreferencePicker: View {
                     Text("✅ Favored")
                         .tag(UInt8(2))
                         .scaledToFit()
-                    },
+                },
                 label: {
                     Label(
                         title: {
                             Text(PreferenceView.title)
+                                .font(.subheadline)
                         },
                         icon: {
                             Image(systemName: PreferenceView.icon)
+                                .foregroundStyle(.indigo)
                         }
                     )
                 }
             )
-            .font(.system(size: 14, weight: .regular))
+            .padding(5)
         }
     }
 }
