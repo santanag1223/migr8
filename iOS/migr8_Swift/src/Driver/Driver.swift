@@ -5,34 +5,49 @@ import Observation
 @Observable
 class DriverData: Codable, Identifiable {
     var id: UUID
+    
     var mileRate: Double
     var hourRate: Double
+    
+    var avgRating: Float
+    var lifetimeMiles: Double
+    
     var vehicles: [Vehicle]
     var offers: OfferCollection
     var prefs: PreferenceCollection
+    var settings: DriverSettings
     
     init(id: UUID = UUID(),
          mileRate: Double = 0,
          hourRate: Double = 0,
+         avgRating: Float = 0,
+         lifetimeMiles: Double = 0,
          vehicles: [Vehicle] = [],
          offers: OfferCollection = OfferCollection(),
-         prefs: PreferenceCollection = PreferenceCollection())
+         prefs: PreferenceCollection = PreferenceCollection(),
+         settings: DriverSettings = DriverSettings())
     {
         self.id = id
         self.mileRate = mileRate
         self.hourRate = hourRate
+        self.avgRating = avgRating
+        self.lifetimeMiles = lifetimeMiles
         self.vehicles = vehicles
         self.offers = offers
         self.prefs = prefs
+        self.settings = settings
     }
     
     required init(from: Decoder) {
         self.id = UUID()
         self.hourRate = 0
         self.mileRate = 0
+        self.avgRating = 0
+        self.lifetimeMiles = 0
         self.vehicles = []
         self.offers = OfferCollection()
         self.prefs = PreferenceCollection()
+        self.settings = DriverSettings()
     }
     
     func encode(to: Encoder) throws {

@@ -91,7 +91,7 @@ struct LoginButtonStyle: ButtonStyle {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color.blue)
+            .background(Color.indigo)
             .cornerRadius(10)
             .opacity(configuration.isPressed ? 0.8 : 1)
     }

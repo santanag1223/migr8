@@ -16,7 +16,7 @@ struct DriverProfileView: View {
                 // Custom tab picker
                 Picker("Profile Section", selection: $selectedTab) {
                     Text("Profile").tag(0)
-                    Text("Preferences").tag(1)
+                    Text("Settings").tag(1)
                     Text("History").tag(2)
                 }
                 .pickerStyle(SegmentedPickerStyle())
@@ -26,7 +26,7 @@ struct DriverProfileView: View {
                     DriverProfileEditor(driverData: driverData)
                         .tag(0)
                     
-                    DriverPreferencesEditor(driverData: driverData)
+                    DriverSettingsView(settings: driverData.settings)
                         .tag(1)
                    
                     DriverRideHistory(driver: driver)
@@ -140,10 +140,10 @@ struct DriverProfileEditor: View {
                             .padding(.bottom, 10)
                         
                         // rating
-                        Text("⭐️ Driver Rating:")
+                        Text("⭐️ Average Rating:")
                             .font(.caption2)
                             .padding(.bottom, 2)
-                        Text("10 / 10")
+                        Text("\(String(format: "%2.2f", driverData.avgRating)) / 10")
                             .font(.headline)
                             .padding(.bottom, 10)
                         
@@ -151,7 +151,7 @@ struct DriverProfileEditor: View {
                         Text("🛣️ Life-Time Distance:")
                             .font(.caption2)
                             .padding(.bottom, 2)
-                        Text("93,120 miles")
+                        Text("\(String(format: "%.2f", driverData.lifetimeMiles))  miles")
                             .font(.headline)
                             //.padding(.bottom, 10)
                         

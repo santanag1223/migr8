@@ -154,6 +154,9 @@ struct DrierHourlyRateView : View {
 
 struct OfferList: View {
     @Bindable var driverData: DriverData
+
+    @State private var editingOffer: Offer? = nil
+    @State private var newPriceInput: String = ""
     
     func groupByCategory(_ items: [Offer]) -> [(OfferCategory, [Offer])] {
         var groupedOffers = Dictionary(grouping: items, by: { $0.category })
@@ -170,10 +173,51 @@ struct OfferList: View {
                 {
                     ForEach(pair.1) { offer in
                         offer.body()
+                        .swipeActions(edge: .trailing) {
+                            if offer.enabled {
+                                Button(action: {
+                                    self.editingOffer = offer
+                                    self.newPriceInput = String(format: "%.2f", offer.price)
+                                }) {
+                                    Label("Rate", systemImage: "dollarsign.gauge.chart.lefthalf.righthalf")
+                                }
+                                .tint(.indigo)
+                            }
+                        }
                     }
                 }
             }
         }.listStyle(.automatic)
+        .sheet(item: $editingOffer) { offer in
+            VStack(spacing: 20) {
+                Text("Edit Rate")
+                    .font(.headline)
+                
+                TextField("Enter new price", text: $newPriceInput)
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
+
+                HStack {
+                    Button("Cancel") {
+                        editingOffer = nil
+                    }
+                    .foregroundColor(.red)
+
+                    Spacer()
+
+                    Button("Save") {
+                        if let newPrice = Double(newPriceInput) {
+                            offer.price = newPrice
+                        }
+                        editingOffer = nil
+                    }
+                    .foregroundColor(.blue)
+                }
+                .padding(.horizontal)
+            }
+            .padding()
+        }
     }
 }
 

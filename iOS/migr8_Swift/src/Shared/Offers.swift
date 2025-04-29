@@ -30,7 +30,6 @@ class Offer : Identifiable {
     var price: Double
     var icon: String?
     var category: OfferCategory
-    
     init(
         title: String = "",
         description: String = "",
@@ -47,9 +46,8 @@ class Offer : Identifiable {
         self.category = category
     }
     
-    @ViewBuilder
     func body() -> some View {
-        VStack(alignment: .leading) {
+        return VStack(alignment: .leading) {
             HStack {
                 if let iconName = self.icon {
                     Image(systemName: iconName)
@@ -86,6 +84,15 @@ class Offer : Identifiable {
             }
         }
         .padding(.vertical, 4)
+        .swipeActions(edge: .leading) {
+            Button(action: {
+                self.enabled.toggle()
+            }) {
+                Label(self.enabled ? "Disable" : "Enable",
+                      systemImage: self.enabled ? "nosign" : "checkmark.circle")
+            }
+            .tint(self.enabled ? .red : .green)
+        }
     }
     
     func toggleEnabled() {

@@ -10,11 +10,13 @@ class ModelData {
 
 // UserState model
 struct UserState: Hashable, Codable, Identifiable {
+    var id: Self { self }
+
+    var isDriver: Bool
+    var isLoggedIn: Bool
+
     var firstName: String
     var lastName: String
-    var id: Self { self }
-    var isLoggedIn: Bool
-    var isDriver: Bool
     
     private var imageName: String
     var image: Image {
