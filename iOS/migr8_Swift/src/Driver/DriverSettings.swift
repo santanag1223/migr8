@@ -2,74 +2,13 @@ import SwiftUI
 import MapKit
 import Observation
 
-struct EmergencyContact: Codable, Identifiable {
-    var id: UUID
-    var firstName: String
-    var lastName: String
-    var phoneNumber: String
-}
-
 @Observable
-class DriverSettings: Codable, Identifiable {
-    var id: UUID
+class DriverSettings: BaseSettings {
     
-    // visual settings
-    var darkModeEnabled: Bool
-    var appAnimationsEnabled: Bool
-    var imperialUnitsEnabled: Bool
-    
-    // driver specific settings
-    var enableDriverFavorability: Bool
-    var enableDriverRatings: Bool
-    var enableDriverNotes: Bool
-    
-    // SOS Mode
-    var enableSOSMode: Bool
-    var emergencyContact: EmergencyContact?
-    var shareLocationOnSOS: Bool
-    var shareLiveLocationOnSOS: Bool
-    
-    init(id: UUID = UUID(),
-         darkModeEnabled: Bool = false,
-         appAnimationsEnabled: Bool = true,
-         imperialUnitsEnabled: Bool = true,
-         enableDriverFavorability: Bool = false,
-         enableDriverRatings: Bool = false,
-         enableDriverNotes: Bool = false,
-         enableSOSMode: Bool = false,
-         enableSOSModeEmergencyContact: EmergencyContact? = nil,
-         shareLocationOnSOS: Bool = false,
-         shareLiveLocationOnSOS: Bool = false)
-    {
-        self.id = id
-        self.darkModeEnabled = darkModeEnabled
-        self.appAnimationsEnabled = appAnimationsEnabled
-        self.imperialUnitsEnabled = imperialUnitsEnabled
-        self.enableDriverFavorability = enableDriverFavorability
-        self.enableDriverRatings = enableDriverRatings
-        self.enableDriverNotes = enableDriverNotes
-        self.enableSOSMode = enableSOSMode
-        self.emergencyContact = enableSOSModeEmergencyContact
-        self.shareLocationOnSOS = shareLocationOnSOS
-        self.shareLiveLocationOnSOS = shareLiveLocationOnSOS
-    }
-    
-    required init(from: Decoder) {
-        self.id = UUID()
-        self.darkModeEnabled = false
-        self.appAnimationsEnabled = true
-        self.imperialUnitsEnabled = true
-        self.enableDriverFavorability = false
-        self.enableDriverRatings = false
-        self.enableDriverNotes = false
-        self.enableSOSMode = false
-        self.shareLocationOnSOS = false
-        self.shareLiveLocationOnSOS = false
-    }
-    
-    func encode(to: Encoder) throws {
-        
-    }
+    // driver specific
+    var enableFavorites: Bool = false
+    var enableMetals: Bool = false
+    var enableRatings: Bool = false
 }
 
 struct DriverSettingsView: View {
@@ -84,15 +23,18 @@ struct DriverSettingsView: View {
             Form {
                 Section(header: Text("Visual Settings")) {
                     Toggle("Dark Mode", isOn: $settings.darkModeEnabled)
-                    Toggle("Use In-App Animations", isOn: $settings.appAnimationsEnabled)
-                    Toggle("Use Imperial Units", isOn: $settings.imperialUnitsEnabled)
-                    
+                    Toggle("In-App Animations", isOn: $settings.appAnimationsEnabled)
+                    Picker("Unit Type", selection: $settings.unitType) {
+                        ForEach(UnitType.allCases, id: \.self) { type in
+                            Text(type.rawValue).tag(type)
+                        }
+                    }
                 }
-                
-                Section(header: Text("Driver Preferences")) {
-                    Toggle("Favorability Score", isOn: $settings.enableDriverFavorability)
-                    Toggle("Driver Ratings", isOn: $settings.enableDriverRatings)
-                    Toggle("Driver Notes", isOn: $settings.enableDriverNotes)
+
+                Section(header: Text("Driver Settings")) {
+                    Toggle("Enable Favorites", isOn: $settings.enableFavorites)
+                    Toggle("Enable Driver Metals", isOn: $settings.enableMetals)
+                    Toggle("Enable Driver Ratings", isOn: $settings.enableRatings)
                 }
                 
                 Section(header: Text("Emergency SOS Settings")) {

@@ -150,8 +150,6 @@ struct DrierHourlyRateView : View {
     }
 }
 
-
-
 struct OfferList: View {
     @Bindable var driverData: DriverData
 
@@ -174,7 +172,7 @@ struct OfferList: View {
                     ForEach(pair.1) { offer in
                         offer.body()
                         .swipeActions(edge: .trailing) {
-                            if offer.enabled {
+                            if offer.enabled && offer.category != .freeOffer {
                                 Button(action: {
                                     self.editingOffer = offer
                                     self.newPriceInput = String(format: "%.2f", offer.price)

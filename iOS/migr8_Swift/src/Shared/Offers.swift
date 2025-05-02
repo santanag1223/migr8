@@ -68,11 +68,21 @@ class Offer : Identifiable {
                 Spacer()
                 
                 if self.enabled {
-                    Text("$\((String(format: "%2.2f", self.price)))")
-                        .font(.caption)
-                        .fontDesign(.monospaced)
-                        .padding(.bottom, 20)
-                        .foregroundColor(.primary)
+                    if self.category == .freeOffer ||
+                        self.price == 0.0 {
+                        Text("free")
+                            .font(.caption)
+                            .fontDesign(.monospaced)
+                            .padding(.bottom, 20)
+                            .foregroundColor(.primary)
+                    }
+                    else {
+                        Text("$\((String(format: "%2.2f", self.price)))")
+                            .font(.caption)
+                            .fontDesign(.monospaced)
+                            .padding(.bottom, 20)
+                            .foregroundColor(.primary)
+                    }
                 }
                 else {
                     Text("🚫")
