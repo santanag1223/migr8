@@ -4,18 +4,18 @@ import Observation
 
 @Observable
 class DriverData: Codable, Identifiable {
-    var id: UUID
+    var id: UUID = UUID()
     
-    var mileRate: Double
-    var hourRate: Double
+    var mileRate: Double = 0
+    var hourRate: Double = 0
     
-    var avgRating: Float
-    var lifetimeMiles: Double
+    var avgRating: Float = 0
+    var lifetimeMiles: Double = 0
     
-    var vehicles: [Vehicle]
-    var offers: OfferCollection
-    var prefs: PreferenceCollection
-    var settings: DriverSettings
+    var vehicles: [Vehicle] = []
+    var offers: OfferCollection = OfferCollection()
+    var prefs: PreferenceCollection = PreferenceCollection()
+    var settings: DriverSettings = DriverSettings()
     
     init(id: UUID = UUID(),
          mileRate: Double = 0,
@@ -54,6 +54,33 @@ class DriverData: Codable, Identifiable {
         
     }
     
+    func load<T: Decodable>(_ filename: String) -> T {
+        let data: Data
+        
+        print("Bundle main path:", Bundle.main.bundlePath)
+        print("Looking for file:", filename)
+        print("Resource path:", Bundle.main.path(forResource: filename.components(separatedBy: ".")[0],
+                                                 ofType: "json") ?? "not found")
+        
+        guard let file = Bundle.main.url(forResource: filename.components(separatedBy: ".")[0],
+                                       withExtension: "json")
+        else {
+            fatalError("Couldn't find \(filename) in main bundle.")
+        }
+        do {
+            data = try Data(contentsOf: file)
+        } catch {
+            fatalError("Couldn't load \(filename) from main bundle:\n\(error)")
+        }
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
+        }
+    }
+
+    
     static func == (lhs: DriverData, rhs: DriverData) -> Bool {
         lhs.id == rhs.id
     }
@@ -63,28 +90,13 @@ class DriverData: Codable, Identifiable {
 class Driver {
     var currentLocation: CLLocationCoordinate2D?
     var isAvailable: Bool = false
-    var driverData: DriverData
-        
-    init(driverData: DriverData? = nil) {
-        if let driverData = driverData {
-            self.driverData = driverData
-        } else {
-            self.driverData = DriverData()
-        }
-    }
 }
 
 struct DriverMainView: View {
-    @Environment(ModelData.self) var modelData
-    @State var driver: Driver
-    
-    init(driverData: DriverData? = nil) {
-        driver = Driver(driverData: driverData)
-    }
+    @Environment(\.driverData) var driverData
+    @State var driver: Driver = Driver()
     
     var body: some View {
-        @Bindable var modelData = modelData
-        
         TabView() {
             DriverMapView(driver: driver)
                 .tabItem {

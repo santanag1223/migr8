@@ -2,43 +2,46 @@ import SwiftUI
 
 @main
 struct migr8: App {
+    var appData = AppData()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.userState, appData.userState)
         }
     }
 }
 
 // migr8 app ContentView
 struct ContentView: View {
-    @State private var modelData = ModelData()
+    @Environment(\.userState) var userState
     
     var body: some View {
-        if modelData.userState.isLoggedIn {
-            if modelData.userState.isDriver
+        if userState.isLoggedIn {
+            if userState.isDriver
             {
-                DriverMainView(driverData: DriverData())
-                    .environment(modelData)
+                DriverMainView()
+                    .environment(\.driverData, DriverData())
             }
             else
             {
-                RiderMainView(riderData: RiderData())
-                    .environment(modelData)
+                RiderMainView()
+                    .environment(\.riderData, RiderData())
             }
         }
         else {
             LoginView()
-                .environment(modelData)
         }
     }
 }
 
 // LoginView
 struct LoginView: View {
-    @Environment(ModelData.self) var modelData
     @State private var loginAsDriver: Bool = true
+    @Environment(\.userState) var userState
     
     var body: some View {
+
         VStack(spacing: 30) {
             Text("migr8")
                 .font(.system(size: 40, weight: .bold))
@@ -53,33 +56,20 @@ struct LoginView: View {
             
             VStack(spacing: 15) {
                 Button("Log In") {
-                    login()
+                    userState.isDriver = loginAsDriver
+                    userState.isLoggedIn = true
                 }
                 .buttonStyle(LoginButtonStyle())
                 
                 Button("Create Account") {
-                    createAccount()
+                    userState.isDriver = loginAsDriver
+                    userState.isLoggedIn = true
                 }
                 .buttonStyle(CreateAccountButtonStyle())
             }
             .padding(.horizontal)
         }
         .padding()
-    }
-    
-    private func login() {
-        modelData.userState.isDriver = loginAsDriver
-        modelData.userState.isLoggedIn = true
-    }
-    
-    private func createAccount() {
-        modelData.userState.isDriver = loginAsDriver
-        modelData.userState.isLoggedIn = true
-    }
-    
-    private func devSkip() {
-        modelData.userState.isDriver = loginAsDriver
-        modelData.userState.isLoggedIn = true
     }
 }
 

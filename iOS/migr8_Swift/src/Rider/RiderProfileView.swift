@@ -2,7 +2,8 @@ import SwiftUI
 import MapKit
 
 struct RiderProfileView: View {
-    @Environment(ModelData.self) var modelData: ModelData
+    @Environment(\.userState) var userState
+    @Environment(\.riderData) var riderData
     var rider: Rider
     @State private var selectedTab = 0
     @State private var showingLogoutAlert = false
@@ -10,7 +11,6 @@ struct RiderProfileView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Custom tab picker
                 Picker("Profile Section", selection: $selectedTab) {
                     Text("Profile").tag(0)
                     Text("Preferences").tag(1)
@@ -20,40 +20,40 @@ struct RiderProfileView: View {
                 .padding()
                 
                 TabView(selection: $selectedTab) {
-                    RiderProfileEditor(riderData: rider.riderData)
+                    RiderProfileEditor(riderData: riderData)
                         .tag(0)
                     
-                    RiderPreferencesEditor(riderData: rider.riderData)
+                    RiderPreferencesEditor(riderData: riderData)
                         .tag(1)
                     
-                    RiderRideHistory(riderData: rider.riderData)
+                    RiderRideHistory(riderData: riderData)
                         .tag(2)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
             .navigationTitle("Profile")
-            .toolbar {
+            .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingLogoutAlert = true
                     }){
-                    Image(systemName: "person.slash.fill")
-                        .foregroundStyle(.red)
+                        Image(systemName: "person.slash.fill")
+                            .foregroundStyle(.red)
                     }
                     .padding(10)
-                    }
                 }
-            }
+            })
             .alert("Logout", isPresented: $showingLogoutAlert) {
                 Button("Cancel", role: .cancel) {
                     showingLogoutAlert = false
-                    }
-                    Button("Logout", role: .destructive) {
-                        modelData.userState.isLoggedIn = false
-                    }
-                } message: {
-                    Text("Are you sure you want to logout?")
                 }
+                Button("Logout", role: .destructive) {
+                    userState.isLoggedIn = false
+                }
+            } message: {
+                Text("Are you sure you want to logout?")
+            }
+        }
     }
 }
 

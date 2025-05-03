@@ -9,7 +9,6 @@ enum RiderMapStatus {
 
 struct RiderMapView: View {
     var rider: Rider
-    @Environment(ModelData.self) var modelData
     @State var camera: MapCameraPosition = .region(MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)

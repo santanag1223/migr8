@@ -1,4 +1,5 @@
 {
+    "id": "6B464B5D-5A30-4CD8-8DAD-2B5F8549EEB9",
     "isDriver": true,
     "isLoggedIn": false,
     "firstName": "John",
@@ -7,69 +8,5 @@
     "coordinates": {
         "latitude": 0,
         "longitude": 0
-    },
-    "driverData": {
-        "settings": {
-            "darkModeEnabled": false,
-            "appAnimationsEnabled": false,
-            "imperialUnitsEnabled": false,
-            "enableDriverFavorability": false,
-            "enableDriverRatings": false,
-            "enableDriverNotes": false,
-            "enableSOSMode": false,
-            "emergencyContact": {},
-            "shareLocationOnSOS": false,
-            "shareLiveLocationOnSOS": false,
-        },
-        "offers": {
-            "allOffers": [
-                {
-                    "title": "Ad-free Music",
-                    "enabled": true,
-                    "price": 0,
-                },
-                {
-                    "title": "Free Water",
-                    "enabled": true,
-                    "price": 0,
-                },
-                {
-                    "title": "AC Controls",
-                    "enabled": true,
-                    "price": 0,
-                },
-                {
-                    "title": "Stereo-Share",
-                    "enabled": true,
-                    "price": 0,
-                },
-                {
-                    "title": "Truck Bed",
-                    "enabled": true,
-                    "price": 0,
-                }
-            ]
-        },
-        "prefs": {
-            "conversationPref" : 1,
-            "foodPref" : 1,
-            "musicPref" : 1,
-            "podcastPref" : 1,
-            "smokingPref" : 1,
-        },
-        "mileRate": 24.5,
-        "hourRate": 10.5,
-        "avgRating": 8.9,
-        "lifetimeMiles": 1234,
-        "vehicles": []
-    },
-    "riderData": {
-        "prefs": {
-            "conversationPref" : 1,
-            "foodPref" : 1,
-            "musicPref" : 1,
-            "podcastPref" : 1,
-            "smokingPref" : 1,
-        }
     }
 }

@@ -32,29 +32,12 @@ class RiderData: Codable, Identifiable {
 class Rider {
     var currentLocation: CLLocationCoordinate2D? = nil
     var isAvailable: Bool = false
-    var riderData: RiderData
-        
-    init(riderData: RiderData? = nil) {
-        if let riderData = riderData {
-            self.riderData = riderData
-        }
-        else {
-            self.riderData = RiderData()
-        }
-    }
 }
 
 struct RiderMainView: View {
-    @Environment(ModelData.self) var modelData
-    @State private var rider: Rider
-    
-    init(riderData: RiderData? = nil) {
-        rider = Rider(riderData: riderData)
-    }
-    
-    var body: some View {
-        @Bindable var modelData = modelData
+    @State private var rider: Rider = Rider()
 
+    var body: some View {
         TabView() {
             RiderMapView(rider: rider)
                 .tabItem {

@@ -1,0 +1,9 @@
+{
+    "prefs": {
+        "conversationPref" : 1,
+        "foodPref" : 1,
+        "musicPref" : 1,
+        "podcastPref" : 1,
+        "smokingPref" : 1,
+    }
+}

@@ -4,13 +4,15 @@ import MapKit
 
 struct DriverProfileView: View {
     @State var driver: Driver
-    @Environment(ModelData.self) var modelData
+    @Environment(\.driverData) var driverData
+    @Environment(\.userState) var userStata
     @State private var selectedTab = 0
     @State private var showingLogoutAlert = false
 
     var body: some View {
-        @Bindable var driverData = self.driver.driverData
-        
+        @Bindable var driverData = self.driverData
+        @Bindable var userStata = self.userStata
+
         NavigationView {
             VStack {
                 // Custom tab picker
@@ -28,36 +30,37 @@ struct DriverProfileView: View {
                     
                     DriverSettingsView(settings: driverData.settings)
                         .tag(1)
-                   
+                    
                     DriverRideHistory(driver: driver)
                         .tag(2)
-
+                    
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
             .navigationTitle("Profile")
-            .toolbar {
+            .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingLogoutAlert = true
                     }) {
-                    Image(systemName: "person.slash.fill")
-                        .foregroundStyle(.red)
+                        Image(systemName: "person.slash.fill")
+                            .foregroundStyle(.red)
                     }
                     .padding(10)
-                    }
                 }
             }
+            )
             .alert("Logout", isPresented: $showingLogoutAlert) {
                 Button("Cancel", role: .cancel) {
                     showingLogoutAlert = false
                 }
                 Button("Logout", role: .destructive) {
-                    modelData.userState.isLoggedIn = false
+                    userStata.isLoggedIn.toggle()
                 }
             } message: {
                 Text("Are you sure you want to logout?")
             }
+        }
     }
 }
 
@@ -119,14 +122,12 @@ struct DriverPreferencesEditor: View {
 }
 
 struct DriverProfileEditor: View {
-    @Environment(ModelData.self) var modelData
+    @Environment(\.userState) var userState
     @Bindable var driverData: DriverData
     @State private var showingAddVehicleForm = false
 
 
-    var body: some View {
-        let modelData = self.modelData
-        
+    var body: some View {        
         Form {
             Section(header: Text("Personal Information")) {
                 HStack(alignment: .center) {
@@ -135,7 +136,7 @@ struct DriverProfileEditor: View {
                         Text("👤 Name:")
                             .font(.caption2)
                             .padding(.bottom, 2)
-                        Text(modelData.userState.firstName + " " + modelData.userState.lastName)
+                        Text(userState.firstName + " " + userState.lastName)
                             .font(.headline)
                             .padding(.bottom, 10)
                         
@@ -193,6 +194,6 @@ struct DriverProfileEditor: View {
  struct DriverProfileView_Preview: PreviewProvider {
     static var previews: some View {
         DriverProfileEditor(driverData: DriverData())
-            .environment(ModelData())
+            .environment(AppData())
    }
 }

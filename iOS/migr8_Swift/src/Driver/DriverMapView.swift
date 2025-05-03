@@ -42,7 +42,6 @@ func GetSurgePricingZones() -> [SurgePricingZone] {
 }
 
 struct RateMapOverlay: View {
-    @Environment(ModelData.self) var modelData
     @State private var highDemandAreas: [SurgePricingZone] = GetSurgePricingZones()
     
     var body: some View {
@@ -145,7 +144,6 @@ struct RiderMapOverlay: View {
 
 struct DriverMapView: View {
     var driver: Driver
-    @Environment(ModelData.self) var modelData
     
     @StateObject private var locationManager = LocationManager()
     @State private var mapStatus: DriverMapStatus = .driverOffline
@@ -155,7 +153,6 @@ struct DriverMapView: View {
     ))
     
     var body: some View {
-        @Bindable var modelData = modelData
         
         ZStack {
             Map(position: $camera).mapControls

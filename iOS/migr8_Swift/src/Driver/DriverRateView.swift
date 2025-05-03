@@ -4,11 +4,11 @@ import MapKit
 // View contains driver's setters for their
 // rate and any offered RiderExtras.
 struct DriverRateView: View {
-    @Environment(ModelData.self) var modelData
+    @Environment(\.driverData) var driverData
     var driver: Driver
     
     var body: some View {
-        @Bindable var driverData = driver.driverData
+        @Bindable var driverData = driverData
 
         Form {
             Section("Your Rates")
