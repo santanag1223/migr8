@@ -20,10 +20,6 @@ struct Coordinates: Hashable, Codable {
 class UserState: Codable, Identifiable {
     var id: UUID = UUID()
     
-    static func == (lhs: UserState, rhs: UserState) -> Bool {
-        lhs.id == rhs.id
-    }
-
     var isDriver: Bool = true
     var isLoggedIn: Bool = false
 
@@ -43,7 +39,7 @@ class UserState: Codable, Identifiable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case id, isDriver, isLoggedIn, firstName, lastName, imageName, coordinates
+        case isDriver, isLoggedIn, firstName, lastName, imageName, coordinates
     }
     
     init() {
@@ -52,7 +48,6 @@ class UserState: Codable, Identifiable {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
         isDriver = try container.decode(Bool.self, forKey: .isDriver)
         isLoggedIn = try container.decode(Bool.self, forKey: .isLoggedIn)
         firstName = try container.decode(String.self, forKey: .firstName)
@@ -63,13 +58,16 @@ class UserState: Codable, Identifiable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
         try container.encode(isDriver, forKey: .isDriver)
         try container.encode(isLoggedIn, forKey: .isLoggedIn)
         try container.encode(firstName, forKey: .firstName)
         try container.encode(lastName, forKey: .lastName)
         try container.encode(imageName, forKey: .imageName)
         try container.encode(coordinates, forKey: .coordinates)
+    }
+    
+    static func == (lhs: UserState, rhs: UserState) -> Bool {
+        lhs.id == rhs.id
     }
 }
 

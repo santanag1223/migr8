@@ -25,7 +25,7 @@ struct DriverProfileView: View {
                 .padding()
                 
                 TabView(selection: $selectedTab) {
-                    DriverProfileEditor(driverData: driverData)
+                    DriverProfileEditor()
                         .tag(0)
                     
                     DriverSettingsView(settings: driverData.settings)
@@ -91,43 +91,44 @@ struct RideHistoryRow: View {
 
 
 struct DriverPreferencesEditor: View {
-    @Bindable var driverData: DriverData
+    @Environment(\.driverData) var driverData
 
     var body: some View {
+        @Bindable var driverData = driverData
             PreferencePicker(
                 PreferenceView: conversationPrefView,
-                prefValue: $driverData.prefs.conversationPref
+                prefValue: $driverData.prefs.convo
             )
             
             PreferencePicker(
                 PreferenceView: foodPrefView,
-                prefValue: $driverData.prefs.foodPref
+                prefValue: $driverData.prefs.food
             )
             
             PreferencePicker(
                 PreferenceView: musicPrefView,
-                prefValue: $driverData.prefs.musicPref
+                prefValue: $driverData.prefs.music
             )
             
             PreferencePicker(
                 PreferenceView: podcastsPrefView,
-                prefValue: $driverData.prefs.podcastPref
+                prefValue: $driverData.prefs.podcast
             )
             
             PreferencePicker(
                 PreferenceView: smokingPrefView,
-                prefValue: $driverData.prefs.smokingPref
+                prefValue: $driverData.prefs.smoke
             )
     }
 }
 
 struct DriverProfileEditor: View {
     @Environment(\.userState) var userState
-    @Bindable var driverData: DriverData
+    @Environment(\.driverData) var driverData
     @State private var showingAddVehicleForm = false
 
 
-    var body: some View {        
+    var body: some View {
         Form {
             Section(header: Text("Personal Information")) {
                 HStack(alignment: .center) {
@@ -172,9 +173,9 @@ struct DriverProfileEditor: View {
             }
             
             Section(header: Text("Preferences")) {
-                DriverPreferencesEditor(driverData: driverData)
+                PreferenceEditorView(prefCollection: driverData.prefs)
             }
-            
+
             Section(header: Text("Vehicles")) {
                 ForEach(driverData.vehicles) { vehicle in
                     VehicleRow(vehicle: vehicle)
@@ -193,7 +194,8 @@ struct DriverProfileEditor: View {
 
  struct DriverProfileView_Preview: PreviewProvider {
     static var previews: some View {
-        DriverProfileEditor(driverData: DriverData())
-            .environment(AppData())
+        DriverProfileEditor()
+            .environment(\.userState, UserStateKey.defaultValue)
+            .environment(\.driverData, DriverDataKey.defaultValue)
    }
 }

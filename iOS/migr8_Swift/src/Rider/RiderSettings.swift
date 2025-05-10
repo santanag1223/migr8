@@ -3,18 +3,14 @@ import MapKit
 import Observation
 
 @Observable
-class DriverSettings: BaseSettings {
+class RiderSettings: BaseSettings {
     
-    // driver specific
-    var enableFavorites: Bool = false
-    var enableMetals: Bool = false
-    var enableRatings: Bool = false
+    // rider specific
     
     enum CodingKeys: String, CodingKey {
         case darkModeEnabled, appAnimationsEnabled,
              unitType, enableSOSMode, emergencyContact,
-             shareLocationOnSOS, shareLiveLocationOnSOS,
-             enableFavorites, enableMetals, enableRatings
+             shareLocationOnSOS, shareLiveLocationOnSOS
     }
     
     override init(){
@@ -36,9 +32,6 @@ class DriverSettings: BaseSettings {
         emergencyContact = try container.decode(EmergencyContact.self, forKey: .emergencyContact)
         shareLocationOnSOS = try container.decode(Bool.self, forKey: .shareLocationOnSOS)
         shareLiveLocationOnSOS = try container.decode(Bool.self, forKey: .shareLiveLocationOnSOS)
-        enableFavorites = try container.decode(Bool.self, forKey: .enableFavorites)
-        enableMetals = try container.decode(Bool.self, forKey: .enableMetals)
-        enableRatings = try container.decode(Bool.self, forKey: .enableRatings)
     }
 
     override func encode(to encoder: Encoder) throws {
@@ -50,14 +43,12 @@ class DriverSettings: BaseSettings {
         try container.encode(emergencyContact, forKey: .emergencyContact)
         try container.encode(shareLocationOnSOS, forKey: .shareLocationOnSOS)
         try container.encode(shareLiveLocationOnSOS, forKey: .shareLiveLocationOnSOS)
-        try container.encode(enableFavorites, forKey: .enableFavorites)
-        try container.encode(enableMetals, forKey: .enableMetals)
-        try container.encode(enableRatings, forKey: .enableRatings)
     }
 }
 
-struct DriverSettingsView: View {
-    @Bindable var settings: DriverSettings
+
+struct RiderSettingsView: View {
+    @Bindable var settings: RiderSettings
     @State private var showEmergencyContactForm = false
     
     @State private var newFirstName: String = ""
@@ -74,12 +65,6 @@ struct DriverSettingsView: View {
                         Text(type.rawValue).tag(type)
                     }
                 }
-            }
-            
-            Section(header: Text("Driver Settings")) {
-                Toggle("Enable Favorites", isOn: $settings.enableFavorites)
-                Toggle("Enable Driver Metals", isOn: $settings.enableMetals)
-                Toggle("Enable Driver Ratings", isOn: $settings.enableRatings)
             }
             
             Section(header: Text("Emergency SOS Settings")) {
@@ -108,40 +93,40 @@ struct DriverSettingsView: View {
                     }
                 }
             }
-        }
-        .sheet(isPresented: $showEmergencyContactForm) {
-            NavigationView {
-                Form(content: {
-                    Section(header: Text("Emergency Contact Information")) {
-                        TextField("First Name", text: $newFirstName)
-                        TextField("Last Name", text: $newLastName)
-                        TextField("Phone Number", text: $newPhoneNumber)
-                            .keyboardType(.phonePad)
-                    }
-                    
-                    Section {
-                        Button("Save Contact") {
-                            let contact = EmergencyContact(
-                                firstName: newFirstName,
-                                lastName: newLastName,
-                                phoneNumber: newPhoneNumber
-                            )
-                            settings.emergencyContact = contact
-                            showEmergencyContactForm = false
-                            
-                            // Clear form fields
-                            newFirstName = ""
-                            newLastName = ""
-                            newPhoneNumber = ""
+            .sheet(isPresented: $showEmergencyContactForm) {
+                NavigationView {
+                    Form {
+                        Section(header: Text("Emergency Contact Information")) {
+                            TextField("First Name", text: $newFirstName)
+                            TextField("Last Name", text: $newLastName)
+                            TextField("Phone Number", text: $newPhoneNumber)
+                                .keyboardType(.phonePad)
                         }
-                        .disabled(newFirstName.isEmpty || newLastName.isEmpty || newPhoneNumber.isEmpty)
+                        
+                        Section {
+                            Button("Save Contact") {
+                                let contact = EmergencyContact(
+                                    firstName: newFirstName,
+                                    lastName: newLastName,
+                                    phoneNumber: newPhoneNumber
+                                )
+                                settings.emergencyContact = contact
+                                showEmergencyContactForm = false
+                                
+                                // Clear form fields
+                                newFirstName = ""
+                                newLastName = ""
+                                newPhoneNumber = ""
+                            }
+                            .disabled(newFirstName.isEmpty || newLastName.isEmpty || newPhoneNumber.isEmpty)
+                        }
                     }
-                })
-                .navigationTitle("Emergency Contact")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button("Cancel") {
-                            showEmergencyContactForm = false
+                    .navigationTitle("Emergency Contact")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("Cancel") {
+                                showEmergencyContactForm = false
+                            }
                         }
                     }
                 }
@@ -150,8 +135,8 @@ struct DriverSettingsView: View {
     }
 }
 
-struct DriverSettingsView_Preview: PreviewProvider {
+struct RiderSettingsView_Preview: PreviewProvider {
     static var previews: some View {
-        DriverSettingsView(settings: DriverSettings())
+        RiderSettingsView(settings: RiderSettings())
     }
 }

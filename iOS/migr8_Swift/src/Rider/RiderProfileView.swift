@@ -1,5 +1,4 @@
 import SwiftUI
-import MapKit
 
 struct RiderProfileView: View {
     @Environment(\.userState) var userState
@@ -20,13 +19,13 @@ struct RiderProfileView: View {
                 .padding()
                 
                 TabView(selection: $selectedTab) {
-                    RiderProfileEditor(riderData: riderData)
+                    RiderProfileEditor()
                         .tag(0)
                     
-                    RiderPreferencesEditor(riderData: riderData)
+                    RiderSettingsView(settings: RiderSettings())
                         .tag(1)
                     
-                    RiderRideHistory(riderData: riderData)
+                    RiderRideHistory()
                         .tag(2)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -58,8 +57,6 @@ struct RiderProfileView: View {
 }
 
 struct RiderRideHistory: View {
-    @Bindable var riderData: RiderData
-
     var body: some View {
         List {
             // get ride history
@@ -70,44 +67,59 @@ struct RiderRideHistory: View {
     }
 }
 
-struct RiderPreferencesEditor: View {
-    @Bindable var riderData: RiderData
-    
-    var body: some View {
-
-        Form() {
-            PreferencePicker(
-                PreferenceView: conversationPrefView,
-                prefValue: $riderData.prefs.conversationPref
-            )
-            PreferencePicker(
-                PreferenceView: foodPrefView,
-                prefValue: $riderData.prefs.foodPref
-            )
-            PreferencePicker(
-                PreferenceView: musicPrefView,
-                prefValue: $riderData.prefs.musicPref
-            )
-            PreferencePicker(
-                PreferenceView: podcastsPrefView,
-                prefValue: $riderData.prefs.podcastPref
-            )
-            PreferencePicker(
-                PreferenceView: smokingPrefView,
-                prefValue: $riderData.prefs.smokingPref
-            )
-        }
-    }
-}
 
 
 struct RiderProfileEditor: View {
-    @Bindable var riderData: RiderData
+    @Environment(\.userState) var userState
+    @Environment(\.riderData) var riderData
+    @State private var showingAddVehicleForm = false
 
     var body: some View {
         Form {
             Section(header: Text("Personal Information")) {
-                // Add personal info fields
+                HStack(alignment: .center) {
+                    VStack(alignment: .center ) {
+                        // name
+                        Text("👤 Name:")
+                            .font(.caption2)
+                            .padding(.bottom, 2)
+                        Text(userState.firstName + " " + userState.lastName)
+                            .font(.headline)
+                            .padding(.bottom, 10)
+                        
+                        // rating
+                        Text("⭐️ Average Rating:")
+                            .font(.caption2)
+                            .padding(.bottom, 2)
+                        Text("\(String(format: "%2.2f", riderData.avgRating)) / 10")
+                            .font(.headline)
+                            .padding(.bottom, 10)
+                        
+                        // miles
+                        Text("🛣️ Life-Time Distance:")
+                            .font(.caption2)
+                            .padding(.bottom, 2)
+                        Text("\(String(format: "%.2f", riderData.lifetimeMiles))  miles")
+                            .font(.headline)
+                            //.padding(.bottom, 10)
+                        
+                        // Add personal info fields
+
+                        Spacer()
+                    }
+                    .padding(15)
+                    Spacer()
+                    Image("jpork")
+                        .resizable()
+                        .aspectRatio(1.0, contentMode: .fit)
+                        .frame(width: 150)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(.indigo, lineWidth: 6))
+                }
+            }
+            
+            Section(header: Text("Preferences")) {
+                PreferenceEditorView(prefCollection: riderData.prefs)
             }
         }
     }

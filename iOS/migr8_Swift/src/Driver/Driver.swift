@@ -13,9 +13,14 @@ class DriverData: Codable, Identifiable {
     var lifetimeMiles: Double = 0
     
     var vehicles: [Vehicle] = []
-    var offers: OfferCollection = OfferCollection()
+    var offers: [Offer] = DEFAULT_OFFERS
     var prefs: PreferenceCollection = PreferenceCollection()
     var settings: DriverSettings = DriverSettings()
+    
+    enum CodingKeys: String, CodingKey {
+        case mileRate, hourRate, avgRating, lifetimeMiles,
+             vehicles, offers, prefs, settings
+    }
     
     init(id: UUID = UUID(),
          mileRate: Double = 0,
@@ -23,7 +28,7 @@ class DriverData: Codable, Identifiable {
          avgRating: Float = 0,
          lifetimeMiles: Double = 0,
          vehicles: [Vehicle] = [],
-         offers: OfferCollection = OfferCollection(),
+         offers: [Offer] = DEFAULT_OFFERS,
          prefs: PreferenceCollection = PreferenceCollection(),
          settings: DriverSettings = DriverSettings())
     {
@@ -38,20 +43,21 @@ class DriverData: Codable, Identifiable {
         self.settings = settings
     }
     
-    required init(from: Decoder) {
-        self.id = UUID()
-        self.hourRate = 0
-        self.mileRate = 0
-        self.avgRating = 0
-        self.lifetimeMiles = 0
-        self.vehicles = []
-        self.offers = OfferCollection()
-        self.prefs = PreferenceCollection()
-        self.settings = DriverSettings()
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        avgRating = try container.decode(Float.self, forKey: .avgRating)
+        lifetimeMiles = try container.decode(Double.self, forKey: .lifetimeMiles)
+        prefs = try container.decode(PreferenceCollection.self, forKey: .prefs)
+        settings = try container.decode(DriverSettings.self, forKey: .settings)
     }
-    
-    func encode(to: Encoder) throws {
-        
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(avgRating, forKey: .avgRating)
+        try container.encode(lifetimeMiles, forKey: .lifetimeMiles)
+        try container.encode(offers, forKey: .offers)
+        try container.encode(prefs, forKey: .prefs)
+        try container.encode(settings, forKey: .settings)
     }
     
     func load<T: Decodable>(_ filename: String) -> T {
@@ -79,7 +85,6 @@ class DriverData: Codable, Identifiable {
             fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
         }
     }
-
     
     static func == (lhs: DriverData, rhs: DriverData) -> Bool {
         lhs.id == rhs.id
@@ -108,6 +113,12 @@ struct DriverMainView: View {
                 .tabItem {
                     Image(systemName: "dollarsign.circle")
                     Text("Rate")
+                }
+            
+            DriverCommunityView(driver: driver)
+                .tabItem {
+                    Image(systemName: "person.3.fill")
+                    Text("Community")
                 }
             
             DriverProfileView(driver: driver)

@@ -1,9 +1,20 @@
 {
+    "settings": {
+        "darkModeEnabled": false,
+        "appAnimationsEnabled": false,
+        "unitType": "Customary",
+        "enableSOSMode": false,
+        "emergencyContact": {},
+        "shareLocationOnSOS": false,
+        "shareLiveLocationOnSOS": false,
+    },
     "prefs": {
-        "conversationPref" : 1,
-        "foodPref" : 1,
-        "musicPref" : 1,
-        "podcastPref" : 1,
-        "smokingPref" : 1,
-    }
+        "convo" : 1,
+        "food" : 1,
+        "music" : 1,
+        "podcast" : 1,
+        "smoke" : 1,
+    },
+    "avgRating": 8.9,
+    "lifetimeMiles": 1234,
 }

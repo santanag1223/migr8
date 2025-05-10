@@ -1,12 +1,44 @@
 import SwiftUI
+import Observation
 
-struct PreferenceCollection: Hashable, Identifiable, Codable {
-    var id: Self { self }
-    var conversationPref: UInt8 = 1
-    var foodPref: UInt8 = 1
-    var musicPref: UInt8 = 1
-    var podcastPref: UInt8 = 1
-    var smokingPref: UInt8 = 1
+@Observable
+class PreferenceCollection: Identifiable, Codable {
+    static func == (lhs: PreferenceCollection, rhs: PreferenceCollection) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case convo, food, music, podcast, smoke
+    }
+    
+    init() {
+        
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        convo = try container.decode(UInt8.self, forKey: .convo)
+        food = try container.decode(UInt8.self, forKey: .food)
+        music = try container.decode(UInt8.self, forKey: .music)
+        podcast = try container.decode(UInt8.self, forKey: .podcast)
+        smoke = try container.decode(UInt8.self, forKey: .smoke)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(convo, forKey: .convo)
+        try container.encode(food, forKey: .food)
+        try container.encode(music, forKey: .music)
+        try container.encode(podcast, forKey: .podcast)
+        try container.encode(smoke, forKey: .smoke)
+    }
+    
+    var id = UUID()
+    var convo: UInt8 = 1
+    var food: UInt8 = 1
+    var music: UInt8 = 1
+    var podcast: UInt8 = 1
+    var smoke: UInt8 = 1
 }
 
 struct PreferenceView {
@@ -82,6 +114,34 @@ struct PreferencePicker: View {
         }
     }
 }
+
+struct PreferenceEditorView: View {
+    @Bindable var prefCollection: PreferenceCollection
+    
+    var body: some View {
+        PreferencePicker(
+            PreferenceView: conversationPrefView,
+            prefValue: $prefCollection.convo
+        )
+        PreferencePicker(
+            PreferenceView: foodPrefView,
+            prefValue: $prefCollection.food
+        )
+        PreferencePicker(
+            PreferenceView: musicPrefView,
+            prefValue: $prefCollection.music
+        )
+        PreferencePicker(
+            PreferenceView: podcastsPrefView,
+            prefValue: $prefCollection.podcast
+        )
+        PreferencePicker(
+            PreferenceView: smokingPrefView,
+            prefValue: $prefCollection.smoke
+        )
+    }
+}
+
 
 struct Preference_Preview : PreviewProvider {
     @State static var prefVal = UInt8(0)

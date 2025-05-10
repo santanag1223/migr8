@@ -22,19 +22,47 @@ enum OfferCategory: String, CaseIterable, CustomStringConvertible, Codable {
 }
 
 @Observable
-class Offer : Identifiable {
+class Offer : Identifiable, Codable {
     var id = UUID()
     var title: String
     var description: String
-    var enabled: Bool
-    var price: Double
+    var price: Float
+    
     var icon: String?
     var category: OfferCategory
+    var enabled: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case title, enabled, price
+    }
+        
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let title = try container.decode(String.self, forKey: .title)
+        self.title = title
+        
+        enabled = try container.decode(Bool.self, forKey: .enabled)
+        price = try container.decode(Float.self, forKey: .price)
+        
+        let offer = FindOfferByTitle(title)
+        
+        icon = offer!.description
+        category = offer!.category
+        description = offer!.description
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(title, forKey: .title)
+        try container.encode(enabled, forKey: .enabled)
+        try container.encode(price, forKey: .price)
+    }
+    
     init(
         title: String = "",
         description: String = "",
         enabled: Bool = false,
-        price: Double = 0.0,
+        price: Float = 0.0,
         icon: String? = nil,
         category: OfferCategory = .rideOffer)
     {
@@ -108,20 +136,9 @@ class Offer : Identifiable {
     func toggleEnabled() {
         enabled.toggle()
     }
-    
-    func toString() -> String {
-        return "\(enabled);\(title);\(price)"
-    }
-    
-    func fromString(_ input: String) {
-        let parts = input.split(separator: ";")
-        enabled = parts[0].trimmingCharacters(in: .whitespaces) == "true"
-        title = parts[1].trimmingCharacters(in: .whitespaces)
-        price = Double(parts[2].trimmingCharacters(in: .whitespaces)) ?? 0.0
-    }
 }
 
-private var DEFAULT_OFFERS : [Offer] = [
+var DEFAULT_OFFERS : [Offer] = [
         Offer(
             title: "Ad-free Music",
             description: "Use ad-free music services.",
@@ -190,23 +207,6 @@ private var DEFAULT_OFFERS : [Offer] = [
             category: .utilOffer)
 ]
 
-@Observable
-final class OfferCollection {
-    var offers: [Offer]
-    init(offers: [Offer] = DEFAULT_OFFERS)
-    {
-        self.offers = offers
-    }
-}
-
-// Environment extentions
-private struct OfferCollectionKey: EnvironmentKey {
-    static var defaultValue: OfferCollection = OfferCollection()
-}
-
-extension EnvironmentValues {
-    var offers: OfferCollection {
-        get { self[OfferCollectionKey.self] }
-        set { self[OfferCollectionKey.self] = newValue }
-    }
+private func FindOfferByTitle(_ title: String) -> Offer? {
+    return DEFAULT_OFFERS.first { $0.title == title }
 }

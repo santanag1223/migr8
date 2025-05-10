@@ -163,7 +163,7 @@ struct OfferList: View {
 
     var body: some View {
         List {
-            ForEach(groupByCategory(self.driverData.offers.offers), id: \.0) { pair in
+            ForEach(groupByCategory(self.driverData.offers), id: \.0) { pair in
                 Section(header: Text(verbatim: pair.0.headerDescription)
                     .font(.caption)
                     .fontWeight(.semibold)
@@ -205,7 +205,7 @@ struct OfferList: View {
                     Spacer()
 
                     Button("Save") {
-                        if let newPrice = Double(newPriceInput) {
+                        if let newPrice = Float(newPriceInput) {
                             offer.price = newPrice
                         }
                         editingOffer = nil

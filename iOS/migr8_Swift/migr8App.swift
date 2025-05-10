@@ -8,6 +8,8 @@ struct migr8: App {
         WindowGroup {
             ContentView()
                 .environment(\.userState, appData.userState)
+                .environment(\.driverData, appData.driverData)
+                .environment(\.riderData, appData.riderData)
         }
     }
 }
@@ -21,12 +23,10 @@ struct ContentView: View {
             if userState.isDriver
             {
                 DriverMainView()
-                    .environment(\.driverData, DriverData())
             }
             else
             {
                 RiderMainView()
-                    .environment(\.riderData, RiderData())
             }
         }
         else {

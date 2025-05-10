@@ -2,50 +2,48 @@
     "settings": {
         "darkModeEnabled": false,
         "appAnimationsEnabled": false,
-        "imperialUnitsEnabled": false,
-        "enableDriverFavorability": false,
-        "enableDriverRatings": false,
-        "enableDriverNotes": false,
-        "enableSOSMode": false,
+        "unitType": "Customary",
         "emergencyContact": {},
+        "enableSOSMode": false,
         "shareLocationOnSOS": false,
         "shareLiveLocationOnSOS": false,
+        "enableFavorites": false,
+        "enableMetals": false,
+        "enableRatings": false,
     },
-    "offers": {
-        "allOffers": [
-            {
-                "title": "Ad-free Music",
-                "enabled": true,
-                "price": 0,
-            },
-            {
-                "title": "Free Water",
-                "enabled": true,
-                "price": 0,
-            },
-            {
-                "title": "AC Controls",
-                "enabled": true,
-                "price": 0,
-            },
-            {
-                "title": "Stereo-Share",
-                "enabled": true,
-                "price": 0,
-            },
-            {
-                "title": "Truck Bed",
-                "enabled": true,
-                "price": 0,
-            }
-        ]
-    },
+    "offers": [
+        {
+            "title": "Ad-free Music",
+            "enabled": true,
+            "price": 0,
+        },
+        {
+            "title": "Free Water",
+            "enabled": true,
+            "price": 0,
+        },
+        {
+            "title": "AC Controls",
+            "enabled": true,
+            "price": 0,
+        },
+        {
+            "title": "Stereo-Share",
+            "enabled": true,
+            "price": 0,
+        },
+        {
+            "title": "Truck Bed",
+            "enabled": true,
+            "price": 0,
+        }
+    ],
     "prefs": {
-        "conversationPref" : 1,
-        "foodPref" : 1,
-        "musicPref" : 1,
-        "podcastPref" : 1,
-        "smokingPref" : 1,
+        "convo" : 1,
+        "food" : 1,
+        "music" : 1,
+        "podcast" : 1,
+        "smoke" : 1,
     },
     "mileRate": 24.5,
     "hourRate": 10.5,
