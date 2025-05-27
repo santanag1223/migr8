@@ -3,7 +3,6 @@ import SwiftUI
 import MapKit
 
 struct DriverProfileView: View {
-    @State var driver: Driver
     @Environment(\.driverData) var driverData
     @Environment(\.userState) var userStata
     @State private var selectedTab = 0
@@ -31,7 +30,7 @@ struct DriverProfileView: View {
                     DriverSettingsView(settings: driverData.settings)
                         .tag(1)
                     
-                    DriverRideHistory(driver: driver)
+                    DriverRideHistory()
                         .tag(2)
                     
                 }
@@ -65,8 +64,6 @@ struct DriverProfileView: View {
 }
 
 struct DriverRideHistory: View {
-    var driver: Driver
-    
     var body: some View {
         List {
             ForEach(0..<10) { _ in
@@ -184,6 +181,7 @@ struct DriverProfileEditor: View {
                 Button("Add Vehicle") {
                     showingAddVehicleForm = true
                 }
+                .foregroundStyle(Color.indigo)
                 .sheet(isPresented: $showingAddVehicleForm) {
                     NewVehicleForm(driverData: driverData)
                 }

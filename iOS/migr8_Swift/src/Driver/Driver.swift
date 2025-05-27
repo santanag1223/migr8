@@ -92,36 +92,181 @@ class DriverData: Codable, Identifiable {
 }
 
 @Observable
-class Driver {
-    var currentLocation: CLLocationCoordinate2D?
-    var isAvailable: Bool = false
+class DriverStatus: Codable, Identifiable {
+    var id: UUID = UUID()
+    
+    var isEditing: Bool = false
+
+    var isOnline: Bool = false
+    var ridesAvaliable: Bool = false
+    var ordersAvailable: Bool = false
+    var extrasAvailable: Bool = false
+        
+    init(id: UUID = UUID(),
+         isEditing: Bool = false,
+         isOnline: Bool = false,
+         ridesAvaliable: Bool = false,
+         ordersAvailable: Bool = false,
+         extrasAvailable: Bool = false)
+    {
+        self.id = id
+        self.isEditing = isEditing
+        self.isOnline = isOnline
+        self.ridesAvaliable = ridesAvaliable
+        self.ordersAvailable = ordersAvailable
+        self.extrasAvailable = extrasAvailable
+    }
+    
+    func StatusString() -> String {
+        var string: String = ""
+        
+        if (self.ridesAvaliable) {
+            string += "( Rides"
+        }
+        
+        if (self.ordersAvailable) {
+            if (!string.isEmpty) {
+                string += ", "
+            } else {
+                string += "( "
+            }
+            
+            string += "Orders"
+        }
+        
+        if (self.extrasAvailable) {
+            if (!string.isEmpty) {
+                string += ", "
+            } else {
+                string += "( "
+            }
+            
+            string += "Extras"
+        }
+        
+        if (!string.isEmpty) {
+            string += " )"
+        }
+        
+        return string
+    }
+    
+    static func == (lhs: DriverStatus, rhs: DriverStatus) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    static func StatusView(driverStatus: DriverStatus) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            if (driverStatus.isOnline) {
+                Image(systemName: "person.crop.circle.badge.checkmark")
+                    .foregroundColor(.green)
+                
+                Spacer()
+
+                
+                Text("Online")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                
+                Text(driverStatus.StatusString())
+                    .font(.footnote)
+                    .foregroundStyle(.tertiary)
+            }
+            else {
+                Image(systemName: "person.crop.circle.badge.xmark")
+                    .foregroundColor(.indigo)
+                
+                Spacer()
+                
+                Text("Offline")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+            
+            Button(action: { driverStatus.isEditing.toggle() }) {
+                Image(systemName: "pencil")
+                    .foregroundColor(.gray)
+            }
+        }
+    }
+    
+    static func StatusEditor(driverStatus: Binding<DriverStatus>) -> some View {
+        VStack(alignment: .center) {
+            Toggle(isOn: driverStatus.isOnline) {
+                if (driverStatus.isOnline.wrappedValue) {
+                    Text("Online")
+                }
+                else {
+                    Text("Offline")
+                }
+            }
+
+            if (driverStatus.isOnline.wrappedValue) {
+                Toggle(isOn: driverStatus.ridesAvaliable) {
+                    if (driverStatus.ridesAvaliable.wrappedValue) {
+                        Text("Accepting Rides")
+                    }
+                    else {
+                        Text("Not Accepting Rides")
+                    }
+                }
+                
+                Toggle(isOn: driverStatus.ordersAvailable) {
+                    if (driverStatus.ordersAvailable.wrappedValue) {
+                        Text("Accepting Food Pickups")
+                    }
+                    else {
+                        Text("Not Accepting Food Pickups")
+                    }
+                }
+                
+                Toggle(isOn: driverStatus.extrasAvailable) {
+                    if (driverStatus.extrasAvailable.wrappedValue) {
+                        Text("Offering Ride Extras")
+                    }
+                    else {
+                        Text("Not Offering Ride Extras")
+                    }
+                }
+            }
+            
+            Button(action: {driverStatus.isEditing.wrappedValue.toggle()}){
+                Text("Save")
+            }
+            .buttonStyle(.borderless)
+        }
+    }
 }
+
 
 struct DriverMainView: View {
     @Environment(\.driverData) var driverData
-    @State var driver: Driver = Driver()
+    
+    @State private var driverStatus: DriverStatus = DriverStatus()
     
     var body: some View {
         TabView() {
-            DriverMapView(driver: driver)
+            DriverMapView()
                 .tabItem {
                     Image(systemName: "car.side")
                     Text("Drive")
                 }
             
-            DriverRateView(driver: driver)
+            DriverRateView(driverStatus: $driverStatus)
                 .tabItem {
                     Image(systemName: "dollarsign.circle")
                     Text("Rate")
                 }
             
-            DriverCommunityView(driver: driver)
+            DriverCommunityView()
                 .tabItem {
                     Image(systemName: "person.3.fill")
                     Text("Community")
                 }
             
-            DriverProfileView(driver: driver)
+            DriverProfileView()
                 .tabItem {
                     Image(systemName: "person.circle")
                     Text("Profile")

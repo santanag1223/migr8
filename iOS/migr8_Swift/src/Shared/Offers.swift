@@ -79,7 +79,7 @@ class Offer : Identifiable, Codable {
             HStack {
                 if let iconName = self.icon {
                     Image(systemName: iconName)
-                        .foregroundColor(.blue)
+                        .foregroundColor(.indigo)
                         .frame(width: 28)
                 }
                 

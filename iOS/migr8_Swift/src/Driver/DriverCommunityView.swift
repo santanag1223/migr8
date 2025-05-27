@@ -1,8 +1,6 @@
 import SwiftUI
 
-struct DriverCommunityView: View {
-    var driver: Driver
-    
+struct DriverCommunityView: View {    
     var body: some View {
         NavigationView {
             List {

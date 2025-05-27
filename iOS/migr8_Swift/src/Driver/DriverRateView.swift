@@ -4,13 +4,23 @@ import MapKit
 // View contains driver's setters for their
 // rate and any offered RiderExtras.
 struct DriverRateView: View {
+    @Binding var driverStatus: DriverStatus
     @Environment(\.driverData) var driverData
-    var driver: Driver
-    
+        
     var body: some View {
         @Bindable var driverData = driverData
 
         Form {
+            Section("Driver Status")
+            {
+                if !driverStatus.isEditing {
+                    DriverStatus.StatusView(driverStatus: driverStatus)
+                }
+                else {
+                    DriverStatus.StatusEditor(driverStatus: $driverStatus)
+                }
+            }
+
             Section("Your Rates")
             {
                 VStack {
@@ -221,22 +231,6 @@ struct OfferList: View {
 
 struct DriverRateView_Preview: PreviewProvider {
     static var previews: some View {
-        Form {
-            Section("Your Rates")
-            {
-                VStack {
-                    DrierHourlyRateView(currentValue: .constant(10.0))
-                    
-                    Divider()
-                    
-                    DrierMileRateView(currentValue: .constant(30.0))
-                }
-            }
-            
-            Section("Your Offers")
-            {
-                OfferList(driverData: DriverData())
-            }
-        }
+        DriverRateView(driverStatus: .constant(DriverStatus()))
     }
 }

@@ -9,12 +9,9 @@ enum RiderMapStatus {
 
 struct RiderMapView: View {
     var rider: Rider
-    @State var camera: MapCameraPosition = .region(MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-    ));
-    @State private var mapStatus: RiderMapStatus = .pendingDestination;
-    @StateObject private var locationManager = LocationManager();
+    
+    @State var camera: MapCameraPosition = .automatic
+    @State private var mapStatus: RiderMapStatus = .pendingDestination
     
     var body: some View {
         

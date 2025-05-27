@@ -22,7 +22,7 @@ class UserState: Codable, Identifiable {
     
     var isDriver: Bool = true
     var isLoggedIn: Bool = false
-
+    
     var firstName: String = ""
     var lastName: String = ""
     
